@@ -1,6 +1,7 @@
 #include <msp430g2452.h>
 
-int main() {
+void spi_init() {
+
     USICTL0  |= USISWRST;                   // put USI in reset mode, source USI clock from SMCLK
     USICTL0  |= USIPE5 | USIPE6 | USIPE7 | USIMST | USIOE;//активен вывод тактов, выход SPI, вход SPI, режим ведущего, вывод разрешен
     USICKCTL |= USIDIV_2 | USISSEL_2;// | USICKPL;       // 16MHz/4, SMCLK
@@ -11,6 +12,13 @@ int main() {
     P2DIR |= BIT0; //вывод ~CS
     P2OUT &= ~BIT0;
 
+    USICTL0 &= ~USISWRST;    // release USI for operation
+
+}
+
+int main() {
+
+    spi_init();
     USICTL0 &= ~USISWRST;    // release USI for operation
     int a = 15;
     
