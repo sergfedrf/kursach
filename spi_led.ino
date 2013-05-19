@@ -16,23 +16,25 @@ void spi_init() {
 
 }
 
-int main() {
-
-    spi_init();
-    USICTL0 &= ~USISWRST;    // release USI for operation
-    int a = 15;
-    int b = 1;
-    
-    
-     USISRH = a;
-    USISRL = b; 
+void spi_senddata(int adr, int data) {
+    USISRH = adr;
+    USISRL = data; 
     P2OUT |= BIT0;
 
     USICNT |= USICNT4 | USI16B;
     while(!(USIIFG));
     P2OUT &= ~BIT0;
-
-    
 }
+
+int main() {
+
+    spi_init();
+    int a = 15;
+    int b = 1; 
+
+    spi_senddata(a,b);   
+
+}
+
 
 
