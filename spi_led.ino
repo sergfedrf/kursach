@@ -21,9 +21,11 @@ int main() {
     spi_init();
     USICTL0 &= ~USISWRST;    // release USI for operation
     int a = 15;
+    int b = 1;
+    
     
      USISRH = a;
-    USISRL = 1; 
+    USISRL = b; 
     P2OUT |= BIT0;
 
     USICNT |= USICNT4 | USI16B;
@@ -32,4 +34,5 @@ int main() {
 
     
 }
+
 
