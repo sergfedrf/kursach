@@ -32,11 +32,7 @@ void spi_init() {
 void spi_senddata(int adr, int data) {
     P2OUT |= BIT0;
     USISRH = adr;
-    if(adr == DIGIT_1) {
-        USISRL = data | 128;
-    } else {
-        USISRL = data;
-    }
+    USISRL = data;
     USICNT |= USICNT4 | USI16B;
      while (!(USICTL1 & USIIFG)) {
         ; // wait for an USICNT to decrement to 0
@@ -88,12 +84,13 @@ int main() {
         temp=tempOut();
         __delay_cycles(50000);
         __delay_cycles(50000);
-        //temp = (temp*0.41-277.7)*100;
+        
 
-        //parsed = (int) temp;
-        //parsed %= 10;
-        temp = temp % 10;
-        spi_senddata(DIGIT_0, temp);
-
+       parsed = temp % 10;
+       
+        spi_senddata(DIGIT_0, parsed);
+        
+        parsed = temp / 10;
+        spi_senddata(DIGIT_1, parsed);
     }    
 }
